@@ -1,7 +1,7 @@
 import TaskGroup from './TaskGroup';
 import TaskGroupAdder from './TaskGroupAdder';
 
-function Sidebar() {
+function Sidebar(props) {
     return (
         <div className="flex flex-col justify-start  mx-8 h-screen">
             <div className='mt-8 px-2 py-3 bg-purple3 text-center text-white text-4xl rounded'>
@@ -11,8 +11,7 @@ function Sidebar() {
             </div>
             <div className='basis-3/12'>
             </div>
-            <TaskGroup name="Personal" />
-            <TaskGroup name="Group project" />
+            <TaskGroup name="Personal" taskCount={props.taskCount} />
             <TaskGroupAdder/>
         </div>
     );
