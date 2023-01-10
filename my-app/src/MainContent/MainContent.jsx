@@ -1,5 +1,4 @@
-import { useRef } from "react";
-import { useEffect } from "react";
+
 import { useState } from "react";
 import Filter from "./Filter";
 import Searcher from "./Searcher";
@@ -8,19 +7,48 @@ import TaskAdder from "./TaskAdder";
 
 function MainContent(props) {
 
+    const [isFiltered, setIsFiltered] = useState(false)
+
     const deleteTask = ((id) => {
 
         console.log("delete task")
         props.setTasks([...props.tasks].filter(task => task.id !== id))
 
         const buf = [...props.tasks].filter(task => task.id !== id)
+
         buf.forEach((task, index) => {
-            task.name = "Task " + (index + 1)
+            if (task.name.match(/Task/))
+                task.name = "Task " + (index + 1)
+        })
+
+        props.setTasks([...buf])
+
+        buf.forEach((task, index) => {
             task.id = index
         })
-        
-        props.setTasks([...buf])
+
+        props.setTasksCopy(buf)
+
         props.setTaskCount(props.taskCount - 1)
+        props.setTaskToEdit({})
+    })
+
+    const sortTasks = ((criteria) => {
+        console.log(criteria)
+        if (criteria === "name") {
+            console.log('sort by name')
+            props.setTasks([...props.tasks].sort((a, b) => a.name.localeCompare(b.name)))
+        }
+        else {
+            props.setTasks([...props.tasks].sort((a, b) => a.date.localeCompare(b.date)))
+        }
+        props.setTasksCopy([...props.tasks])
+    })
+
+    const searchTasks = ((substr) => {
+        setIsFiltered(substr === "" ? false : true);
+        props.setTasks([...props.tasksCopy].filter(task => task.name.includes(substr)))
+
     })
 
 
@@ -30,12 +58,13 @@ function MainContent(props) {
                 Personal tasks
             </div>
             <div className="flex flex-row justify-between pt-10">
-                <Searcher />
-                <Filter />
+                <Searcher searchTasks={searchTasks} />
+                <Filter sortTasks={sortTasks} />
             </div>
             <div className="grid grid-cols-3 gap-10 content-start my-10 h-full">
                 {props.tasks.map((task, number) => <Task data={task} tasks={props.tasks} deleteTask={deleteTask} key={number} setModalIsOpen={props.setModalIsOpen} setTaskToEdit={props.setTaskToEdit} />)}
-                <TaskAdder setTasks={props.setTasks} tasks={props.tasks} taskCount={props.taskCount} setTaskCount={props.setTaskCount} />
+                <TaskAdder setTasks={props.setTasks} tasks={props.tasks} taskCount={props.taskCount}
+                    setTaskCount={props.setTaskCount} setTasksCopy={props.setTasksCopy} isFiltered={isFiltered}  />
             </div>
         </div>
     );

@@ -2,17 +2,19 @@ function Task(props) {
 
 
     return (
-        <div className="group text-white bg-gradient-to-br from-purple4 to-purple3 p-6 rounded-lg shadow-md shadow-purple4">
+        <div className="flex flex-col justify-between align-center group text-white bg-gradient-to-br from-purple4 to-purple3 p-6 rounded-lg shadow-md shadow-purple4">
 
             <div className="flex flex-row justify-between align-center">
 
-                <div className="text-2xl text-center font-semibold">{props.data.name}</div>
+                <div className="text-2xl text-center font-semibold"> {props.data.name === (undefined || "") ? `Task ${props.data.id + 1}` : props.data.name}</div>
                 <div className='invisible group-hover:visible flex flex-row'>
                     <svg
                         onClick={() => {
-                            props.setModalIsOpen(true); props.setTaskToEdit(props.tasks.findIndex(task => task.id === props.data.id))
+                            props.setModalIsOpen(true);
+                            props.setTaskToEdit(props.tasks.find(task => task.id === props.data.id))
                             console.log(props.setTaskToEdit(props.tasks.find(task => task.id === props.data.id)))
                         }}
+                        
                         xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="hover:text-teal-600 hover:cursor-pointer w-6 h-6 mr-2">
                         <path strokeLinecap="round" strokeLinejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10" />
                     </svg>
@@ -23,20 +25,27 @@ function Task(props) {
                     </svg>
                 </div>
             </div>
+
             <div className="pt-4">
-                {props.data.description === undefined ? "Add description" : props.data.description}
+                {(props.data.description === (undefined) || props.data.description === "") ? "Add description" : props.data.description}
             </div>
+
             <div className="flex flex-row justify-between align-center mt-10">
-                <div className={`basis-1/4 rounded-xl text-center text-black bg-[${props.data.color === undefined ? "#50d71e" : props.data.color}]`}>
-                    {props.data.tag === undefined ? "Add tag" : props.data.tag}
+
+                <div className={`rounded-xl text-center text-black px-3 py-1 ${(props.data.color === undefined || props.data.color === "" || props.data.color === "bg-transparent") ? "bg-tag_pink" : props.data.color}`}>
+                    {(props.data.tag === undefined || props.data.tag === "") ? "Add tag" : props.data.tag}
                 </div>
+
                 <div className="flex flex-row align-center  text-lg">
+
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
                         <path stroke-linecap="round" strokeLinejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5" />
                     </svg>
+
                     <div className="ml-3">
-                        {props.data.date === undefined ? "Add date" : props.data.date}
+                        {(props.data.date === undefined || props.data.date === "") ? "Add date" : props.data.date}
                     </div>
+
                 </div>
             </div>
         </div>

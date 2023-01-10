@@ -1,4 +1,5 @@
 function TaskGroup(props) {
+    
     return (
         <button className='group flex flex-row justify-between px-4 py-4 mb-5 bg-purple3 text-start text-white text-xl rounded-xl shadow-md shadow-purple3'>
             <div>{props.name}</div>
