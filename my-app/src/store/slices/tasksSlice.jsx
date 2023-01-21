@@ -15,7 +15,7 @@ const tasksSlice = createSlice({
         },
         deleteTask(state, action) {
             state.tasks = state.tasks.filter(task => task.id !== action.payload)
-            state.tasksCopy = [...state.tasks]
+            state.tasksCopy = state.tasksCopy.filter(task => task.id !== action.payload)
         },
         editTask(state, action) {
             state.tasks = state.tasks.map(
@@ -24,22 +24,23 @@ const tasksSlice = createSlice({
             state.tasksCopy = [...state.tasks]
         },
         filterTasks(state, action) {
-            if (action.payload === "name") {
-                state.tasks.sort((a, b) => a.title.localeCompare(b.title))
-            }
-            else {
-                state.tasks.sort((a, b) => a.date.localeCompare(b.date))
-            }
-            state.tasksCopy = [...state.tasks]
+            state.tasks.sort((a, b) => a[action.payload].localeCompare(b[action.payload]))
         },
         searchTasks(state, action) {
             state.tasks = [...state.tasksCopy].filter(task => task.title.includes(action.payload))
+        },
+        sortByTag(state, action) {
+            if (action.payload !== "All") {
+                state.tasks = [...state.tasksCopy].filter(task => task.tag === action.payload)
+            }
+            else {
+                state.tasks = [...state.tasksCopy]
+            }
         }
-
 
     }
 })
 
-export const { addTask, deleteTask, editTask, filterTasks, searchTasks } = tasksSlice.actions
+export const { addTask, deleteTask, editTask, filterTasks, searchTasks, sortByTag } = tasksSlice.actions
 
 export default tasksSlice.reducer

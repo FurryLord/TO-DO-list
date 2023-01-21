@@ -1,6 +1,5 @@
 import { useSelector } from 'react-redux';
 import TaskGroup from './TaskGroup';
-import TaskGroupAdder from './TaskGroupAdder';
 
 function Sidebar() {
 
@@ -16,7 +15,6 @@ function Sidebar() {
             <div className='basis-3/12'>
             </div>
             {groups.map((group, number) => <TaskGroup data={group} key={number} />)}
-            <TaskGroupAdder />
         </div>
     );
 }

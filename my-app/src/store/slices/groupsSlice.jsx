@@ -1,9 +1,8 @@
-import { createSlice, nanoid } from "@reduxjs/toolkit"
+import { createSlice } from "@reduxjs/toolkit"
 
 const initialState = {
-    isEdited: false,
-    groups: [{title: "Personal", id: nanoid()}],
-    count: 0
+    groups: [{ name: "All", taskCount: 0 }],
+    selectedGroup: "All"
 }
 
 const groupsSlice = createSlice({
@@ -11,21 +10,31 @@ const groupsSlice = createSlice({
     initialState,
     reducers: {
         addGroup(state, action) {
-            state.groups.push(action.payload)
-            state.count += 1
+            const groupIndex = state.groups.findIndex(group => group.name === action.payload)
+            if ((groupIndex) !== -1) {
+                state.groups[groupIndex].taskCount += 1
+            }
+            else {
+                state.groups.push({ name: action.payload, taskCount: 1 })
+            }
+            state.groups[0].taskCount += 1
         },
         deleteGroup(state, action) {
-            if (state.count > 1) {
-                state.groups = state.groups.filter(task => task.id !== action.payload)
-                state.count -= 1
+            const groupIndex = state.groups.findIndex(group => group.name === action.payload)
+            if (state.groups[groupIndex].taskCount === 1) {
+                state.groups.splice(groupIndex, 1)
             }
+            else {
+                state.groups[groupIndex].taskCount -= 1
+            }
+            state.groups[0].taskCount -= 1
         },
-        setGroupEdited(state, action) {
-            state.isEdited = action.payload
+        selectGroup(state, action) {
+            state.selectedGroup = action.payload
         }
     }
 })
 
-export const { addGroup, deleteGroup, setGroupEdited } = groupsSlice.actions
+export const { addGroup, deleteGroup, selectGroup} = groupsSlice.actions
 
 export default groupsSlice.reducer
