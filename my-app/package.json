@@ -19,7 +19,9 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "predeploy" : "npm run build",
+    "deploy" : "gh-pages -d build"
   },
   "eslintConfig": {
     "extends": [
@@ -45,6 +47,7 @@
     "@tailwindcss/forms": "^0.5.3",
     "@vmw/slices-for-redux": "^0.5.3",
     "autoprefixer": "^10.4.13",
+    "gh-pages": "^5.0.0",
     "postcss-import": "^15.1.0",
     "react-redux": "^8.0.5",
     "redux": "^4.2.0",
@@ -52,5 +55,6 @@
   },
   "peerDependencies": {
     "react-spring": "^9.2.0"
-  }
+  },
+  "homepage": "http://FurryLord.github.io/TO-DO-list"
 }
